@@ -23,7 +23,9 @@ Here's a walkthrough of implemented user stories:
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
+## Notes
 
+I out lots of time on debgugging onsuccess and onfailure part for Timeline activity, I could not see the tweets items in the debugger.
 
 ## Open-source libraries used
 
