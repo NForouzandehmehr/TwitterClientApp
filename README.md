@@ -1,4 +1,4 @@
-# Project 3 - *Twitter Client App*
+# Project 2 - *Twitter Client App*
 
 **Name of your app** is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
