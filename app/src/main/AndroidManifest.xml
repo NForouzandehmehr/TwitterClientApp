@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
-
     <application
         android:name=".TwitterApplication"
         android:allowBackup="true"
@@ -50,6 +49,10 @@
             android:name=".TimelineActivity"
             android:label="@string/title_activity_timeline"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".composeActivity"
+            android:label="@string/title_activity_compose" >
         </activity>
     </application>
 

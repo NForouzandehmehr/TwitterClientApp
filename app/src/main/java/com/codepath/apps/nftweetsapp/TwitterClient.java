@@ -1,6 +1,7 @@
 package com.codepath.apps.nftweetsapp;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -8,6 +9,10 @@ import com.loopj.android.http.RequestParams;
 
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /*
  * 
@@ -49,7 +54,29 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("since_id", 1);
 		getClient().get(apiUrl, params, handler);
 	}
+	public void getUserCredentials(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		RequestParams params = new RequestParams();
+		params.put("skip_status", 1);
+		params.put("include_entities", "false");
+		getClient().get(apiUrl, params, handler);
+	}
 
+
+	public void postTweet(String tweetText, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status", tweetText);
+		getClient().post(apiUrl, params, handler);
+	}
+
+
+	public void showTweet(long tweetId, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/show.json");
+		RequestParams params = new RequestParams();
+		params.put("id", tweetId);
+		getClient().get(apiUrl, params, handler);
+	}
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)
@@ -57,5 +84,26 @@ public class TwitterClient extends OAuthBaseClient {
 	 * 3. Define the request method and make a call to the client
 	 *    i.e client.get(apiUrl, params, handler);
 	 *    i.e client.post(apiUrl, params, handler);
+	 *
 	 */
+	public static String getRelativeTimeAgo(String rawJsonDate) {
+		String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+		SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+		sf.setLenient(true);
+
+		String relativeDate = "";
+		try {
+			long dateMillis = sf.parse(rawJsonDate).getTime();
+			relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+					System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+			relativeDate = relativeDate.replace("minutes","m").replace("minutes","m").replace("weeks","w").replace("hours","h").replace("seconds","s").replace("minute","m")
+					.replace("days","d").replace("day","d")
+					.replace("week","w").replace("hour","h")
+					.replace("second","s").replace("ago","").replace(" ","");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return relativeDate;
+	}
 }
